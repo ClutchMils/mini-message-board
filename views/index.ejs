@@ -1,0 +1,22 @@
+<!-- index.ejs -->
+<html>
+  <head>
+    <title>Homepage</title>
+ 
+  </head>
+  <body>
+    <%- include('navbar', {links: links}) %>
+
+   <ul>
+        <% messages.forEach((message, index) => { %>
+            <li>
+            <p><strong><%= message.user %></strong></p>
+            <p><%= message.text %></p>
+            <p><%= message.added.toLocaleString() %></p>
+
+            <%- include("openButton", { index: index }) %>
+            </li>
+        <% }); %>
+    </ul>
+  </body>
+</html>
