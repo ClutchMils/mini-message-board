@@ -1,9 +1,19 @@
+require("dotenv").config();
+
 const express = require("express");
-const app = express();
-
-
-
 const path = require("node:path");
+const { neon } = require("@neondatabase/serverless");
+
+const app = express();
+const sql = neon(process.env.DATABASE_URL);
+
+async function checkDatabaseConnection() {
+  const result = await sql`SELECT version()`;
+  console.log("Connected to Neon:", result[0].version);
+}
+
+checkDatabaseConnection().catch(console.error);
+
 const newRouter = require("./routes/newRouter");
 const indexRouter = require("./routes/indexRouter");
 
@@ -22,10 +32,9 @@ app.use("/", indexRouter);
 
 const PORT = 3000;
 app.listen(PORT, (error) => {
-    
-    if(error) {
-        throw error;
-    }
+  if (error) {
+    throw error;
+  }
 
-    console.log(`Express app - listening on port ${PORT}!`);
-})
+  console.log(`Express app - listening on port ${PORT}!`);
+});
